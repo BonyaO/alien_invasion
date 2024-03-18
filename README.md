@@ -5,7 +5,7 @@ All you need to do is
 
 configure your venv and install requirements.txt
 ```bash
-    python3 -m venv venv
+  python3 -m venv venv
 ```
 
 ```bash
@@ -14,5 +14,5 @@ configure your venv and install requirements.txt
 
 Run the game with
 ```bash
-    python3 alien_invasion.py
+  python3 alien_invasion.py
 ```

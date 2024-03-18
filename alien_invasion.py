@@ -4,6 +4,7 @@ import pygame
 from setting import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 
 # def _update_screen():
@@ -22,6 +23,9 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
 
         # set a bullets group
         self.bullets = pygame.sprite.Group()
@@ -33,16 +37,18 @@ class AlienInvasion:
             self._check_events()
 
             self.ship.update()
-            self.bullets.update()
-
-            # get rid of bullets that have disappeared
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-                print(len(self.bullets))
+            self._update_bullets()
 
             # Redraw the screen during each pass through the loop
             self._update_screen()
+
+    def _update_bullets(self):
+        """Update position of bullets and get rid of old bullets"""
+        self.bullets.update()
+        # get rid of bullets that have disappeared
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
@@ -51,6 +57,7 @@ class AlienInvasion:
         # Draw bullets on the screen
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         # Make the most recently drawn screen visible.
         pygame.display.flip()
 
@@ -96,11 +103,14 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _create_fleet(self):
+        """Create the fleet of aliens"""
+        # Make an alien
+        alien = Alien(self)
+        self.aliens.add(alien)
 
-ai = AlienInvasion()
-ai.run_game()
 
-# if __name__ == '__main___':
-#     # Make a game instance, and run the game.
-#     ai = AlienInvasion()
-#     ai.run_game()
+if __name__ == '__main__':
+    # Make a game instance, and run the game.
+    ai = AlienInvasion()
+    ai.run_game()
